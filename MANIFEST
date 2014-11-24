@@ -15,7 +15,9 @@ MANIFEST			This list of files
 README
 t/bin/true.sh
 t/cacheable.t
+t/jsoncodec.t
 t/lib/WTSI/DNAP/Utilities/CacheableTest.pm
+t/lib/WTSI/DNAP/Utilities/JSONCodecTest.pm
 t/lib/WTSI/DNAP/Utilities/LoggableTest.pm
 t/lib/WTSI/DNAP/Utilities/RunnableTest.pm
 t/lib/WTSI/DNAP/Utilities/StartableTest.pm
