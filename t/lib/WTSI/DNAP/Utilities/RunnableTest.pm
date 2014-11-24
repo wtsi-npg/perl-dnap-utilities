@@ -12,6 +12,8 @@ BEGIN { use_ok('WTSI::DNAP::Utilities::Runnable'); }
 
 use WTSI::DNAP::Utilities::Runnable;
 
+Log::Log4perl::init('./etc/log4perl_tests.conf');
+
 sub run : Test(2) {
   my $runnable = WTSI::DNAP::Utilities::Runnable->new
     (executable => './t/bin/true.sh');

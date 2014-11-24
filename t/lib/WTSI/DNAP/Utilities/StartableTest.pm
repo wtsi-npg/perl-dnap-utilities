@@ -22,6 +22,8 @@ BEGIN { use_ok('WTSI::DNAP::Utilities::Startable'); }
 
 use WTSI::DNAP::Utilities::StartableThing;
 
+Log::Log4perl::init('./etc/log4perl_tests.conf');
+
 sub start_stop : Test(5) {
   my $exec = '/bin/cat';
   my $args = ['-'];
