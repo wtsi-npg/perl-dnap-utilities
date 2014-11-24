@@ -1,0 +1,24 @@
+.travis.yml
+Build.PL
+Build.pm
+COPYING
+etc/log4perl_tests.conf
+lib/WTSI/DNAP/Utilities/Cacheable.pm
+lib/WTSI/DNAP/Utilities/Executable.pm
+lib/WTSI/DNAP/Utilities/IO.pm
+lib/WTSI/DNAP/Utilities/JSONCodec.pm
+lib/WTSI/DNAP/Utilities/Loggable.pm
+lib/WTSI/DNAP/Utilities/Runnable.pm
+lib/WTSI/DNAP/Utilities/Startable.pm
+lib/WTSI/DNAP/Utilities/Version.pm
+MANIFEST			This list of files
+README
+t/bin/true.sh
+t/cacheable.t
+t/lib/WTSI/DNAP/Utilities/CacheableTest.pm
+t/lib/WTSI/DNAP/Utilities/LoggableTest.pm
+t/lib/WTSI/DNAP/Utilities/RunnableTest.pm
+t/lib/WTSI/DNAP/Utilities/StartableTest.pm
+t/loggable.t
+t/runnable.t
+t/startable.t
