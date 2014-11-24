@@ -1,5 +1,5 @@
 
-package WTSI::NPG::JSONCodec;
+package WTSI::DNAP::Utilities::JSONCodec;
 
 use JSON;
 use Moose::Role;
