@@ -3,6 +3,7 @@ Build.PL
 Build.pm
 COPYING
 etc/log4perl_tests.conf
+lib/WTSI/DNAP/Utilities.pm
 lib/WTSI/DNAP/Utilities/Cacheable.pm
 lib/WTSI/DNAP/Utilities/Executable.pm
 lib/WTSI/DNAP/Utilities/IO.pm
@@ -21,6 +22,8 @@ t/lib/WTSI/DNAP/Utilities/JSONCodecTest.pm
 t/lib/WTSI/DNAP/Utilities/LoggableTest.pm
 t/lib/WTSI/DNAP/Utilities/RunnableTest.pm
 t/lib/WTSI/DNAP/Utilities/StartableTest.pm
+t/lib/WTSI/DNAP/UtilitiesTest.pm
 t/loggable.t
 t/runnable.t
 t/startable.t
+t/utilities.t
