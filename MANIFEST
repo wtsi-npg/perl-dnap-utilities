@@ -11,8 +11,9 @@ lib/WTSI/DNAP/Utilities/JSONCodec.pm
 lib/WTSI/DNAP/Utilities/Loggable.pm
 lib/WTSI/DNAP/Utilities/Runnable.pm
 lib/WTSI/DNAP/Utilities/Startable.pm
-lib/WTSI/DNAP/Utilities/Version.pm
 MANIFEST			This list of files
+META.json
+META.yml
 README
 t/bin/true.sh
 t/cacheable.t

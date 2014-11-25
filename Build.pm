@@ -7,7 +7,7 @@ use warnings;
 use base 'Module::Build';
 
 our $DEFAULT_VERSION = '0.0.0';
-our $VERSION_FILE    = 'blib/lib/WTSI/DNAP/Utilities/Version.pm';
+our $VERSION_FILE    = 'blib/lib/WTSI/DNAP/Utilities.pm';
 
 # Git version code courtesy of Marina Gourtovaia <mg8@sanger.ac.uk>
 sub git_tag {
@@ -41,7 +41,7 @@ sub ACTION_code {
   my $gitver = $self->git_tag;
 
   if (-e $VERSION_FILE) {
-    warn "Changing version of WTSI::DNAP::Utilities::Version to $gitver\n";
+    warn "Changing version of WTSI::DNAP::Utilities::VERSION to $gitver\n";
 
     my $backup  = '.original';
     local $^I   = $backup;
