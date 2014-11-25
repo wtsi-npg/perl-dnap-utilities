@@ -16,7 +16,7 @@ my $build = Build->new
    dist_version       => Build->git_tag,
    license            => 'gpl',
    configure_requires => {
-                          'Module::Build' => 0.42
+                          'Module::Build'   => ">= 0.42"
                          },
    test_requires      => {
                           'TAP::Harness'    => '>= 3.30',
