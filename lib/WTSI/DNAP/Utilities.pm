@@ -4,11 +4,7 @@ package WTSI::DNAP::Utilities;
 use strict;
 use warnings;
 
-use WTSI::DNAP::Utilities::Version;
-
-use vars qw($VERSION);
-
-$VERSION = $WTSI::DNAP::Utilities::Version::VERSION;
+our $VERSION = '';
 
 return 1;
 
