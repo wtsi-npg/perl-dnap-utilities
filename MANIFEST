@@ -1,6 +1,5 @@
 .travis.yml
 Build.PL
-Build.pm
 COPYING
 etc/log4perl_tests.conf
 lib/WTSI/DNAP/Utilities.pm
