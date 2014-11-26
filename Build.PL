@@ -19,22 +19,24 @@ my $build = WTSI::DNAP::Utilities::Build->new
    dist_version       => WTSI::DNAP::Utilities::Build->report_version,
    license            => 'gpl',
    configure_requires => {
-                          'Module::Build'   => ">= 0.42"
+                          'Module::Build'      => ">= 0.42"
                          },
    test_requires      => {
-                          'TAP::Harness'    => '>= 3.30',
-                          'Test::Class'     => '>= 0.41',
-                          'Test::More'      => '>= 0.98',
-                          'Test::Exception' => '>= 0.32',
+                          'TAP::Harness'       => '>= 3.30',
+                          'Test::Class'        => '>= 0.41',
+                          'Test::More'         => '>= 0.98',
+                          'Test::Exception'    => '>= 0.32',
+                          'Test::Perl::Critic' => '>= 0.02'
                          },
    requires =>           {
-                          'Carp'            => '>= 1.20',
-                          'Cache::Cache'    => '>= 1.06',
-                          'Encode'          => '>= 2.42',
-                          'IPC::Run'        => '>= 0.92',
-                          'JSON'            => '>= 2.61',
-                          'Log::Log4perl'   => '>= 1.42',
-                          'Moose'           => '>= 2.1',
+                          'Carp'               => '>= 1.20',
+                          'Cache::Cache'       => '>= 1.06',
+                          'Encode'             => '>= 2.42',
+                          'IPC::Run'           => '>= 0.92',
+                          'JSON'               => '>= 2.61',
+                          'Log::Log4perl'      => '>= 1.42',
+                          'Moose'              => '>= 2.1',
+                          'Try::Tiny'          => '>= 0.12'
                          });
 
 $build->create_build_script;
