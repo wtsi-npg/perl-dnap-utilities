@@ -1,23 +1,27 @@
 
 package WTSI::DNAP::Utilities::Executable;
 
+use strict;
+use warnings;
 use IPC::Run;;
 use Moose::Role;
+
+our $VERSION = '';
 
 has 'stdin' =>
   (is      => 'rw',
    isa     => 'ScalarRef[Str] | FileHandle | CodeRef',
-   default => sub { my $x = ''; return \$x; });
+   default => sub { my $x = q{}; return \$x; });
 
 has 'stdout' =>
   (is      => 'rw',
    isa     => 'ScalarRef[Str] | FileHandle | CodeRef',
-   default => sub { my $x = ''; return \$x; });
+   default => sub { my $x = q{}; return \$x; });
 
 has 'stderr' =>
   (is      => 'rw',
    isa     => 'ScalarRef[Str] | FileHandle | CodeRef',
-   default => sub { my $x = ''; return \$x; });
+   default => sub { my $x = q{}; return \$x; });
 
 has 'environment' =>
   (is      => 'ro',

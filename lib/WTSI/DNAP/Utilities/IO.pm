@@ -8,6 +8,8 @@ use Carp;
 use base 'Exporter';
 our @EXPORT_OK = qw(maybe_stdin maybe_stdout);
 
+our $VERSION = '';
+
 =head2 maybe_stdin
 
   Arg [1]    : filename or undef
@@ -38,7 +40,7 @@ sub maybe_stdin {
       croak "'$file' is a directory\n";
     }
 
-    open($fh, '<', "$file") or confess "Failed to open file '$file': $!\n";
+    open $fh, '<', "$file" or confess "Failed to open file '$file': $!\n";
   } else {
     $fh = \*STDIN;
   }
@@ -63,7 +65,7 @@ sub maybe_stdout {
 
   my $fh;
   if (defined $file) {
-    open($fh, '>', "$file") or confess "Failed to open '$file': $!\n";
+    open $fh, '>', "$file" or confess "Failed to open '$file': $!\n";
   } else {
     $fh = \*STDOUT;
   }

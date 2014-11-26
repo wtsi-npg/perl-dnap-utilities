@@ -1,10 +1,14 @@
 
 package WTSI::DNAP::Utilities::Runnable;
 
+use strict;
+use warnings;
 use Encode qw(decode);
-use English;
+use English qw(-no_match_vars);
 use IPC::Run;
 use Moose;
+
+our $VERSION = '';
 
 with 'WTSI::DNAP::Utilities::Loggable', 'WTSI::DNAP::Utilities::Executable';
 
@@ -40,16 +44,18 @@ sub run {
 
   my $status = $CHILD_ERROR;
   if ($status) {
+    ##no critic (ValuesAndExpressions::ProhibitMagicNumbers)
     my $signal = $status & 127;
-    my $exit = $status >> 8;
+    my $exit   = $status >> 8;
+    ##use critic
 
     if ($signal) {
       $self->logconfess("Execution of '$command' died from signal: $signal");
     }
     else {
       $self->logconfess("Execution of '$command' failed with exit code: ",
-                        "$exit and STDERR '", join(" ", $self->split_stderr),
-                        "'");
+                        "$exit and STDERR ",
+                        q{'}, join(q{ }, $self->split_stderr), q{'});
     }
   }
   else {

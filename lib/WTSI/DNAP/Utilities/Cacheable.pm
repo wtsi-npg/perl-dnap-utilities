@@ -1,8 +1,12 @@
 
 package WTSI::DNAP::Utilities::Cacheable;
 
+use strict;
+use warnings;
 use Cache::MemoryCache;
 use Moose::Role;
+
+our $VERSION = '';
 
 with 'WTSI::DNAP::Utilities::Loggable';
 
@@ -113,7 +117,7 @@ __END__
 
 =head1 NAME
 
-WTSI::NPG::Cacheable
+WTSI::DNAP::Utilities::Cacheable
 
 =head1 DESCRIPTION
 

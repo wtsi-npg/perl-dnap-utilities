@@ -1,9 +1,14 @@
 
 package WTSI::DNAP::Utilities::Startable;
 
-use English;
+use strict;
+use warnings;
+use English qw(-no_match_vars);
 use IPC::Run;
 use Moose::Role;
+use Try::Tiny;
+
+our $VERSION = '';
 
 with 'WTSI::DNAP::Utilities::Loggable', 'WTSI::DNAP::Utilities::Executable';
 
@@ -24,6 +29,7 @@ sub BUILD {
                                    $self->stdin,
                                    $self->stdout,
                                    $self->stderr));
+  return $self;
 }
 
 =head2 start
@@ -79,13 +85,14 @@ sub stop {
   $self->debug("Stopping '$command'");
 
   my $harness = $self->harness;
-  eval { $harness->finish };
-
-  if ($EVAL_ERROR) {
-    my $err = $EVAL_ERROR;
+  try {
+    $harness->finish;
+  } catch {
+    my $err = $_;
     $harness->kill_kill;
     $self->logconfess($err);
-  }
+  };
+
   $self->started(0);
 
   return $self;

@@ -6,7 +6,7 @@ use warnings;
 
 our $VERSION = '';
 
-return 1;
+1;
 
 __END__
 

@@ -1,19 +1,23 @@
 
 package WTSI::DNAP::Utilities::Loggable;
 
+use strict;
+use warnings;
 use Log::Log4perl;
 use Moose::Role;
 
+our $VERSION = '';
+
 # This is used if Log:Log4perl has not been initialised elsewhere when
 # this Role is used.
-my $default_conf = q(
-   log4perl.logger.npg = DEBUG, A1
+my $default_conf = << 'EOF';
+log4perl.logger.npg = WARN, A1
 
-   log4perl.appender.A1           = Log::Log4perl::Appender::Screen
-   log4perl.appender.A1.utf8      = 1
-   log4perl.appender.A1.layout    = Log::Log4perl::Layout::PatternLayout
-   log4perl.appender.A1.layout.ConversionPattern = %d %p %m %n
-);
+log4perl.appender.A1           = Log::Log4perl::Appender::Screen
+log4perl.appender.A1.utf8      = 1
+log4perl.appender.A1.layout    = Log::Log4perl::Layout::PatternLayout
+log4perl.appender.A1.layout.ConversionPattern = %d %p %m %n
+EOF
 
 # These methods are autodelegated to instances with this role.
 our @HANDLED_LOG_METHODS = qw(trace debug info warn error fatal
@@ -25,7 +29,7 @@ has 'logger' => (is      => 'rw',
                  handles => [@HANDLED_LOG_METHODS],
                  default => sub {
                     Log::Log4perl->init_once(\$default_conf);
-                    return Log::Log4perl->get_logger('npg');
+                    return Log::Log4perl->get_logger('dnap');
                   });
 
 no Moose;
