@@ -4,6 +4,7 @@ Build.pm
 COPYING
 etc/log4perl_tests.conf
 lib/WTSI/DNAP/Utilities.pm
+lib/WTSI/DNAP/Utilities/Build.pm
 lib/WTSI/DNAP/Utilities/Cacheable.pm
 lib/WTSI/DNAP/Utilities/Executable.pm
 lib/WTSI/DNAP/Utilities/IO.pm
@@ -12,11 +13,10 @@ lib/WTSI/DNAP/Utilities/Loggable.pm
 lib/WTSI/DNAP/Utilities/Runnable.pm
 lib/WTSI/DNAP/Utilities/Startable.pm
 MANIFEST			This list of files
-META.json
-META.yml
 README
 t/bin/true.sh
 t/cacheable.t
+t/critic.t
 t/jsoncodec.t
 t/lib/WTSI/DNAP/Utilities/CacheableTest.pm
 t/lib/WTSI/DNAP/Utilities/JSONCodecTest.pm
@@ -25,6 +25,7 @@ t/lib/WTSI/DNAP/Utilities/RunnableTest.pm
 t/lib/WTSI/DNAP/Utilities/StartableTest.pm
 t/lib/WTSI/DNAP/UtilitiesTest.pm
 t/loggable.t
+t/perlcriticrc
 t/runnable.t
 t/startable.t
 t/utilities.t

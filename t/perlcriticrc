@@ -1,0 +1,28 @@
+
+[-CodeLayout::RequireTidyCode]
+[-CodeLayout::RequireTrailingCommas]
+
+[-Documentation::PodSpelling]
+[-Documentation::RequirePodAtEnd]
+
+[Documentation::RequirePodSections]
+lib_sections    = AUTHOR
+script_sections = NAME | SYNOPSIS | DESCRIPTION | AUTHOR
+
+[-ControlStructures::ProhibitUnlessBlocks]
+[ControlStructures::ProhibitPostfixControls]
+allow = if unless
+
+
+[-InputOutput::RequireBriefOpen]
+[-InputOutput::ProhibitBacktickOperators]
+[-InputOutput::RequireBracedFileHandleWithPrint]
+
+[InputOutput::RequireCheckedSyscalls]
+functions = open opendir read readline readdir close closedir
+
+[-References::ProhibitDoubleSigils]
+
+[-ValuesAndExpressions::ProhibitInterpolationOfLiterals]
+
+[-Variables::ProhibitPunctuationVars]

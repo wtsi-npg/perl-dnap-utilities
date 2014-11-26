@@ -1,8 +1,12 @@
 
 package WTSI::DNAP::Utilities::JSONCodec;
 
+use strict;
+use warnings;
 use JSON;
 use Moose::Role;
+
+our $VERSION = '';
 
 # These methods are autodelegated to instances with this role.
 our @HANDLED_JSON_METHODS = qw(decode encode);

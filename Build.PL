@@ -4,16 +4,19 @@ use warnings;
 
 # These paths are propagated to @INC in the build script. The 't/lib'
 # directory is added because the Test::Class tests are there.
-use lib qw(. t/lib);
+use lib qw(lib t/lib);
 
-use Module::Build;
-use Build;
+use WTSI::DNAP::Utilities::Build;
 
-my $build = Build->new
+my $build = WTSI::DNAP::Utilities::Build->new
   (module_name        => 'WTSI::DNAP::Utilities',
-   dist_author        => ['Keith James <kdj@sanger.ac.uk>'],
+   dist_author        => [
+                          'Marina Gourtovaia <mg8@sanger.ac.uk>',
+                          'Keith James <kdj@sanger.ac.uk>',
+                          'Kate Taylor <kt6@sanger.ac.uk>'
+                         ],
    dist_abstract      => 'WTSI DNA Pipelines Utility Library',
-   dist_version       => Build->git_tag,
+   dist_version       => WTSI::DNAP::Utilities::Build->report_version,
    license            => 'gpl',
    configure_requires => {
                           'Module::Build'   => ">= 0.42"
