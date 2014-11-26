@@ -91,7 +91,8 @@ sub stop {
     my $err = $_;
     $harness->kill_kill;
     $self->logconfess($err);
-  }
+  };
+
   $self->started(0);
 
   return $self;
