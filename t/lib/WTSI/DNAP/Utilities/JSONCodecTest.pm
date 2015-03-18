@@ -21,8 +21,6 @@ use Log::Log4perl;
 
 BEGIN { use_ok('WTSI::DNAP::Utilities::JSONCodec'); }
 
-use WTSI::DNAP::Utilities::JSONCodecThing;
-
 Log::Log4perl::init('./etc/log4perl_tests.conf');
 
 my $json = '{"foo":"bar"}';

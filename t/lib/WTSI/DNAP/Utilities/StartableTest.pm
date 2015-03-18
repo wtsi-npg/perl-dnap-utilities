@@ -20,8 +20,6 @@ use Test::Exception;
 
 BEGIN { use_ok('WTSI::DNAP::Utilities::Startable'); }
 
-use WTSI::DNAP::Utilities::StartableThing;
-
 Log::Log4perl::init('./etc/log4perl_tests.conf');
 
 sub start_stop : Test(5) {

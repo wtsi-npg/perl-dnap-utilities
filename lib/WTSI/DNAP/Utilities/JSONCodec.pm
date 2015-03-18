@@ -12,10 +12,11 @@ our $VERSION = '';
 our @HANDLED_JSON_METHODS = qw(decode encode);
 
 has 'max_size' =>
-  (is       => 'ro',
-   isa      => 'Int',
-   required => 1,
-   default  => 4096);
+  (is            => 'ro',
+   isa           => 'Int',
+   required      => 0,
+   default       => 0,
+   documentation => 'The default max size is 0 which indicates no limit');
 
 has 'parser' =>
   (is       => 'ro',
@@ -49,7 +50,7 @@ Keith James <kdj@sanger.ac.uk>
 
 =head1 COPYRIGHT AND DISCLAIMER
 
-Copyright (c) 2014 Genome Research Limited. All Rights Reserved.
+Copyright (C) 2014, 2015 Genome Research Limited. All Rights Reserved.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the Perl Artistic License or the GNU General
