@@ -1,18 +1,19 @@
-
 package WTSI::DNAP::Utilities::RunnableTest;
 
 use strict;
 use warnings;
 
 use base qw(Test::Class);
-use Test::More tests => 3;
 use Test::Exception;
-
-BEGIN { use_ok('WTSI::DNAP::Utilities::Runnable'); }
+use Test::More;
 
 use WTSI::DNAP::Utilities::Runnable;
 
 Log::Log4perl::init('./etc/log4perl_tests.conf');
+
+sub require : Test(1) {
+  require_ok('WTSI::DNAP::Utilities::Runnable');
+}
 
 sub run : Test(2) {
   my $runnable = WTSI::DNAP::Utilities::Runnable->new
@@ -20,6 +21,20 @@ sub run : Test(2) {
 
   is($runnable->executable, './t/bin/true.sh');
   ok($runnable->run);
+}
+
+sub pipe : Test(1) {
+  my $echo = WTSI::DNAP::Utilities::Runnable->new
+    (executable => 'echo',
+     arguments  => ['Hello']);
+  # Useless use of cat!
+  my $cat = WTSI::DNAP::Utilities::Runnable->new
+    (executable => 'cat');
+  my $wc = WTSI::DNAP::Utilities::Runnable->new
+    (executable  => 'wc');
+
+  is_deeply([$echo->pipe($cat, $wc)->split_stdout],
+            ['      1       1       6']);
 }
 
 1;
