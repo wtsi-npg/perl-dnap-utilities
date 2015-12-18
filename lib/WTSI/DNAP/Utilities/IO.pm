@@ -27,11 +27,11 @@ sub maybe_stdin {
 
   my $fh;
   if (defined $file) {
-    unless (-e $file) {
+    if (not -e $file) {
       croak "file '$file' does not exist\n";
     }
 
-    unless (-r $file) {
+    if (not -r $file) {
       # Gives incorrect result on mounted Windows shares
       # croak "file '$file' is not readable\n";
     }

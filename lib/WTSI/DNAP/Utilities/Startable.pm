@@ -75,7 +75,7 @@ sub start {
 sub stop {
   my ($self) = @_;
 
-  unless ($self->started) {
+  if (not $self->started) {
     $self->logconfess($self->executable, " has not started; cannot stop it");
     return $self;
   }
@@ -85,15 +85,21 @@ sub stop {
   $self->debug("Stopping '$command'");
 
   my $harness = $self->harness;
+  my $success;
+
   try {
-    $harness->finish;
+    $success = $harness->finish;
   } catch {
-    my $err = $_;
     $harness->kill_kill;
-    $self->logconfess($err);
+    $self->logconfess($_);
+  } finally {
+    $self->started(0);
   };
 
-  $self->started(0);
+  if (not $success) {
+    $self->logconfess("Execution of '$command' exited with code ",
+                      $harness->result);
+  }
 
   return $self;
 }
@@ -129,7 +135,8 @@ Keith James <kdj@sanger.ac.uk>
 
 =head1 COPYRIGHT AND DISCLAIMER
 
-Copyright (C) 2013, 2014 Genome Research Limited. All Rights Reserved.
+Copyright (C) 2013, 2014, 2015 Genome Research Limited. All Rights
+Reserved.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the Perl Artistic License or the GNU General
