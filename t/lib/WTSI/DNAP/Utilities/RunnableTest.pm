@@ -23,18 +23,18 @@ sub run : Test(2) {
   ok($runnable->run);
 }
 
-sub pipe : Test(1) {
-  my $echo = WTSI::DNAP::Utilities::Runnable->new
-    (executable => 'echo',
-     arguments  => ['Hello']);
+sub pipe : Test(2) {
+  my $echo = WTSI::DNAP::Utilities::Runnable->new(executable => 'echo',
+                                                  arguments  => ['Hello']);
   # Useless use of cat!
-  my $cat = WTSI::DNAP::Utilities::Runnable->new
-    (executable => 'cat');
-  my $wc = WTSI::DNAP::Utilities::Runnable->new
-    (executable  => 'wc');
+  my $cat = WTSI::DNAP::Utilities::Runnable->new(executable => 'cat');
+  my $wc = WTSI::DNAP::Utilities::Runnable->new(executable  => 'wc');
 
   is_deeply([$echo->pipe($cat, $wc)->split_stdout],
             ['      1       1       6']);
+
+  my $false = WTSI::DNAP::Utilities::Runnable->new(executable => 'false');
+  dies_ok { $echo->pipe($cat, $false, $wc) }, 'Detects pipe failure';
 }
 
 1;

@@ -144,22 +144,22 @@ sub _run {
   }
   else {
     my $status = $CHILD_ERROR;
-    if ($status) {
-      ##no critic (ValuesAndExpressions::ProhibitMagicNumbers)
-      my $signal = $status & 127;
-      my $exit   = $status >> 8;
-      ##use critic
 
-      if ($signal) {
-        $self->logconfess("Execution of '$command' died from signal: $signal");
-      }
-      else {
-        $self->logconfess("Execution of '$command' failed with exit code: ",
-                          "$exit and STDERR ",
-                          q{'}, join(q{ }, $self->split_stderr), q{'});
-      }
+    ## no critic (ValuesAndExpressions::ProhibitMagicNumbers)
+    my $signal = $status & 127;
+    my $exit   = $status >> 8;
+    ## use critic
+
+    if ($signal) {
+      $self->logconfess("Execution of '$command' died from signal: $signal");
+    }
+    else {
+      $self->logconfess("Execution of '$command' failed with exit code: ",
+                        "$exit and STDERR ",
+                        q{'}, join(q{ }, $self->split_stderr), q{'});
     }
   }
+
 
   return $success;
 }
