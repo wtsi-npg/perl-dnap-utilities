@@ -9,11 +9,6 @@
 lib_sections    = AUTHOR
 script_sections = NAME | SYNOPSIS | DESCRIPTION | AUTHOR
 
-[-ControlStructures::ProhibitUnlessBlocks]
-[ControlStructures::ProhibitPostfixControls]
-allow = if unless
-
-
 [-InputOutput::RequireBriefOpen]
 [-InputOutput::ProhibitBacktickOperators]
 [-InputOutput::RequireBracedFileHandleWithPrint]

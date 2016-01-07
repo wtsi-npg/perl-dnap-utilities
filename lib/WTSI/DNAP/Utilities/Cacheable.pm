@@ -25,7 +25,7 @@ has 'method_caches' =>
                my $cache = $self->get_method_cache($method,
                                                    {default_expires_in => 60});
 
-  Description: Return an existing cache or make a new one if noe exists.
+  Description: Return an existing cache or make a new one if none exists.
 
   Returntype : Cache::MemoryCache
 
@@ -122,7 +122,7 @@ WTSI::DNAP::Utilities::Cacheable
 =head1 DESCRIPTION
 
 A Role providing methods for the management of per-method caches of
-return values. The caches are created usig Cache::MemoryCache. The
+return values. The caches are created using Cache::MemoryCache. The
 namespace of each cache is the fully qualified method name.
 
 =head1 AUTHOR

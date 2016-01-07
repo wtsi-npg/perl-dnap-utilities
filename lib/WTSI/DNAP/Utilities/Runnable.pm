@@ -16,63 +16,78 @@ with 'WTSI::DNAP::Utilities::Loggable', 'WTSI::DNAP::Utilities::Executable';
 
   Example    : WTSI::DNAP::Utilities::Runnable->new(executable => 'ls',
                                                     arguments  => ['/'])->run;
+
   Description: Run the executable with the supplied arguments and STDIN.
                STDIN, STDOUT and STDERR may be accessed via the methods of
-               WTSI::DNAP::Utilities::Executable. Dies on no-zero exit of
+               WTSI::DNAP::Utilities::Executable. Dies on non-zero exit of
                child. Returns $self.
-
-  Returntype : WTSI::NPG::Runnable
+  Returntype : WTSI::DNAP::Utilities::Runnable
 
 =cut
 
 sub run {
   my ($self) = @_;
 
-  my @cmd = ($self->executable, @{$self->arguments});
-  my $command = join q{ }, @cmd;
-  $self->debug("Running '$command'");
-
-  my $result;
-  {
-    local %ENV = %{$self->environment};
-
-    $result = IPC::Run::run(\@cmd,
-                            '<',  $self->stdin,
-                            '>',  $self->stdout,
-                            '2>', $self->stderr);
-  }
-
-  my $status = $CHILD_ERROR;
-  if ($status) {
-    ##no critic (ValuesAndExpressions::ProhibitMagicNumbers)
-    my $signal = $status & 127;
-    my $exit   = $status >> 8;
-    ##use critic
-
-    if ($signal) {
-      $self->logconfess("Execution of '$command' died from signal: $signal");
-    }
-    else {
-      $self->logconfess("Execution of '$command' failed with exit code: ",
-                        "$exit and STDERR ",
-                        q{'}, join(q{ }, $self->split_stderr), q{'});
-    }
-  }
-  else {
-    $self->debug("Execution of '$command' succeeded");
-  }
+  my @ipc_args = ([$self->executable, @{$self->arguments}],
+                  q{<},  $self->stdin,
+                  q{>},  $self->stdout,
+                  q{2>}, $self->stderr);
+  $self->_run(@ipc_args);
 
   return $self;
 }
 
+=head2 pipe
+
+  Arg [n]    : Any number of other runnables to be piped togther,
+               Array[WTSI::DNAP::Utilities::Runnable]
+  Example    : my $view     = WTSI::DNAP::Utilities::Runnable->new
+                 (executable => 'samtools',
+                  arguments   => ['view', 'irods:15440_1#0.sam']);
+               my $flagstat = WTSI::DNAP::Utilities::Runnable->new
+                 (executable => 'samtools',
+                  arguments  => ['flagstat', '-']);
+
+               my @stats_records = $view->pipe($flagstat)->split_stdout;
+
+  Description: Run the executables with the supplied arguments and STDIN.
+               STDOUT is piped to STDIN of the first argument, STDOUT of
+               the first argument is piped to STDIN of the second etc.
+               STDIN, STDOUT and STDERR may be accessed via the methods of
+               WTSI::DNAP::Utilities::Executable. Dies on non-zero exit of
+               child. Returns $self.
+  Returntype : WTSI::DNAP::Utilities::Runnable
+
+=cut
+
+## no critic (Subroutines::ProhibitBuiltinHomonyms)
+sub pipe {
+  my ($self, @runnables) = @_;
+
+  my @ipc_args = ([$self->executable, @{$self->arguments}],
+                  q{<}, $self->stdin);
+
+  foreach my $runnable (@runnables) {
+    push @ipc_args, q{|}, [$runnable->executable, @{$runnable->arguments}];
+  }
+  push @ipc_args, q{>},  $self->stdout,
+                  q{2>}, $self->stderr;
+
+  $self->_run(@ipc_args);
+
+  return $self;
+}
+## use critic
+
 =head2 split_stdout
+
   Example    : WTSI::DNAP::Utilities::Runnable->new
                    (executable => 'ls',
                     arguments  => ['/'])->run->split_stdout
+
   Description: If $self->stdout is a ScalarRef, dereference and split on the
                supplied delimiter (defaults to the input record separator).
                Raises an error if $self->stdout is not a ScalarRef.
-
   Returntype : Array[Str]
 
 =cut
@@ -89,13 +104,14 @@ sub split_stdout {
 }
 
 =head2 split_stderr
+
   Example    : WTSI::DNAP::Utilities::Runnable->new
                   (executable => 'ls',
                    arguments  => ['/'])->run->split_stderr
+
   Description: If $self->stderr is a ScalarRef, dereference and split on the
                supplied delimiter (defaults to the input record separator).
                Raises an error if $self->stderr is not a ScalarRef.
-
   Returntype : Array[Str]
 
 =cut
@@ -109,6 +125,43 @@ sub split_stderr {
   my $copy = decode('UTF-8', ${$self->stderr}, Encode::FB_CROAK);
 
   return split $INPUT_RECORD_SEPARATOR, $copy;
+}
+
+sub _run {
+  my ($self, @ipc_args) = @_;
+
+  my $command = join q{ }, map { ref $_ eq 'ARRAY' ? @{$_} : $_ } @ipc_args;
+  $self->debug("Running '$command'");
+
+  my $success;
+  {
+    local %ENV = %{$self->environment};
+    $success = IPC::Run::run(@ipc_args);
+  }
+
+  if ($success) {
+    $self->debug("Execution of '$command' succeeded");
+  }
+  else {
+    my $status = $CHILD_ERROR;
+
+    ## no critic (ValuesAndExpressions::ProhibitMagicNumbers)
+    my $signal = $status & 127;
+    my $exit   = $status >> 8;
+    ## use critic
+
+    if ($signal) {
+      $self->logconfess("Execution of '$command' died from signal: $signal");
+    }
+    else {
+      $self->logconfess("Execution of '$command' failed with exit code: ",
+                        "$exit and STDERR ",
+                        q{'}, join(q{ }, $self->split_stderr), q{'});
+    }
+  }
+
+
+  return $success;
 }
 
 __PACKAGE__->meta->make_immutable;

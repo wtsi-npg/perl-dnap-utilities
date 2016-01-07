@@ -91,7 +91,7 @@ sub git_tag {
     $version = $DEFAULT_VERSION;
   }
 
-  unless ($version =~ /^\d+([.]\d+)?(-\S+)?/sxm) {
+  if (not $version =~ m{^\d+([.]\d+)?(-\S+)?}sxm) {
     carp "git version string $version not in canonical format, " .
       "defaulting to $DEFAULT_VERSION-$version";
     $version = "$DEFAULT_VERSION-$version";
