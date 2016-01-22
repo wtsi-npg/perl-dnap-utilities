@@ -1,0 +1,12 @@
+
+ - Bug fix: the Moose global destruction flag is respected when the
+   Startable destructor is called.
+
+ - Errors encountered while stopping Startable external processes are
+   now logged without then re-throwing the error. The process STDERR
+   is now captured.
+
+ - Added a pipe method to Runnable to allow them to be piped together
+   using IPC::Run's pipe support.
+
+Release 0.4.2
