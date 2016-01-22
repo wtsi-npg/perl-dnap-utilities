@@ -91,23 +91,33 @@ sub stop {
     $success = $harness->finish;
   } catch {
     $harness->kill_kill;
-    $self->logconfess($_);
+    $self->error($_);
   } finally {
     $self->started(0);
   };
 
   if (not $success) {
+    my $stderr = defined $self->stderr ? $self->stderr : q[];
+    if (ref $stderr eq 'SCALAR') {
+      $stderr = $$stderr;
+    }
+
     $self->logconfess("Execution of '$command' exited with code ",
-                      $harness->result);
+                      $harness->result, " and STDERR '$stderr'");
   }
 
   return $self;
 }
 
 sub DEMOLISH {
-  my ($self) = @_;
+  my ($self, $in_global_destruction) = @_;
 
-  if ($self->started) {
+  # Only do try to stop cleanly if the object is not already being
+  # destroyed by Perl (as indicated by the flag passed in by Moose).
+  # Adding the in_global_destruction test resolved a bug where the
+  # Perl process was hanging while trying to log the stop call.
+
+  if (not $in_global_destruction and $self->started) {
     $self->stop;
   }
 
