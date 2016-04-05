@@ -1,4 +1,3 @@
-
 package WTSI::DNAP::Utilities::Loggable;
 
 use strict;
@@ -11,7 +10,7 @@ our $VERSION = '';
 # This is used if Log:Log4perl has not been initialised elsewhere when
 # this Role is used.
 my $default_conf = << 'EOF';
-log4perl.logger.npg = WARN, A1
+log4perl.logger = WARN, A1
 
 log4perl.appender.A1           = Log::Log4perl::Appender::Screen
 log4perl.appender.A1.utf8      = 1
@@ -29,7 +28,7 @@ has 'logger' => (is      => 'rw',
                  handles => [@HANDLED_LOG_METHODS],
                  default => sub {
                     Log::Log4perl->init_once(\$default_conf);
-                    return Log::Log4perl->get_logger('dnap');
+                    return Log::Log4perl->get_logger(q[]);
                   });
 
 no Moose;
@@ -46,7 +45,8 @@ WTSI::DNAP::Utilities::Loggable
 
 Provides a logging facility via Log::Log4perl. When consumed, this
 role automatically delegates Log::Log4perl logging method calls to a
-logger.
+logger. If no logger is condigured a default will be created where the
+root logger is configured to WARN to STDERR.
 
 =head1 AUTHOR
 
@@ -54,7 +54,8 @@ Keith James <kdj@sanger.ac.uk>
 
 =head1 COPYRIGHT AND DISCLAIMER
 
-Copyright (C) 2013, 2014 Genome Research Limited. All Rights Reserved.
+Copyright (C) 2013, 2014, 2016 Genome Research Limited. All Rights
+Reserved.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the Perl Artistic License or the GNU General
