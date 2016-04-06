@@ -1,3 +1,7 @@
+Release 0.5.1
+
+ - The default logger set up by a Loggable is now the root logger.
+
 Release 0.5.0
 
  - Bug fix: the Moose global destruction flag is respected when the
