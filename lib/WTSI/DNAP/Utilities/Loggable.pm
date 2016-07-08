@@ -16,6 +16,7 @@ log4perl.appender.A1           = Log::Log4perl::Appender::Screen
 log4perl.appender.A1.utf8      = 1
 log4perl.appender.A1.layout    = Log::Log4perl::Layout::PatternLayout
 log4perl.appender.A1.layout.ConversionPattern = %d %p %m %n
+log4perl.appender.A1.utf8      = 1
 EOF
 
 # These methods are autodelegated to instances with this role.
@@ -26,10 +27,27 @@ our @HANDLED_LOG_METHODS = qw(trace debug info warn error fatal
 has 'logger' => (is      => 'rw',
                  isa     => 'Log::Log4perl::Logger',
                  handles => [@HANDLED_LOG_METHODS],
-                 default => sub {
-                    Log::Log4perl->init_once(\$default_conf);
-                    return Log::Log4perl->get_logger(q[]);
-                  });
+                 lazy    => 1,
+                 builder => '_build_logger');
+
+sub _build_logger {
+  my ($self) = @_;
+
+  my $class_name = $self->meta->name;
+  my $logger;
+
+  if (not Log::Log4perl->initialized) {
+    Log::Log4perl->init_once(\$default_conf);
+    $logger = Log::Log4perl->get_logger($class_name);
+    $logger->debug('Log4perl was initialised with default fallback ',
+                   "configuration by the logger builder of '$class_name'");
+  }
+  else {
+    $logger = Log::Log4perl->get_logger($class_name);
+  }
+
+  return $logger;
+}
 
 no Moose;
 
@@ -45,8 +63,28 @@ WTSI::DNAP::Utilities::Loggable
 
 Provides a logging facility via Log::Log4perl. When consumed, this
 role automatically delegates Log::Log4perl logging method calls to a
-logger. If no logger is condigured a default will be created where the
+logger. If no logger is configured a default will be created where the
 root logger is configured to WARN to STDERR.
+
+The default logger returned by the 'logger' method is named after the
+fully qualified name of the Moose meta class e.g.
+
+ WTSI::NPG::iRODS
+
+has a default logger addressable by the string
+
+ log4perl.logger.WTSI.NPG.iRODS
+
+Broader logging may be enabled by configuring a logger higher up the
+class hierarchy e.g.
+
+ log4perl.logger.WTSI.NPG
+
+will configure loggers under the WTSI::NPG.iRODS hierarchy. As per the
+log4perl documentation, different classes may be configured to log at
+different levels and to different locations. Please see the Log4perl
+FAQ if you observe logging that you do not expect e.g. duplicate
+messages; there are tips in the FAQ on that topic.
 
 =head1 AUTHOR
 
