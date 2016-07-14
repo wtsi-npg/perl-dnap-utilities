@@ -1,6 +1,10 @@
+Release 0.5.2
+
+ - Configure logger using the fully qualified name of the Moose metaclass.
+ - Ensure test dependencies are installed.
+
 Release 0.5.1
 
- - Ensure test dependencies are installed.
  - The default logger set up by a Loggable is now the root logger.
 
 Release 0.5.0
