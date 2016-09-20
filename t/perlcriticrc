@@ -9,6 +9,8 @@
 lib_sections    = AUTHOR
 script_sections = NAME | SYNOPSIS | DESCRIPTION | AUTHOR
 
+[-Miscellanea::RequireRcsKeywords]
+
 [-InputOutput::RequireBriefOpen]
 [-InputOutput::ProhibitBacktickOperators]
 [-InputOutput::RequireBracedFileHandleWithPrint]
