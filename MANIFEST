@@ -5,6 +5,7 @@ etc/log4perl_tests.conf
 lib/WTSI/DNAP/Utilities.pm
 lib/WTSI/DNAP/Utilities/Build.pm
 lib/WTSI/DNAP/Utilities/Cacheable.pm
+lib/WTSI/DNAP/Utilities/ConfigureLogger.pm
 lib/WTSI/DNAP/Utilities/Executable.pm
 lib/WTSI/DNAP/Utilities/IO.pm
 lib/WTSI/DNAP/Utilities/JSONCodec.pm
@@ -13,11 +14,14 @@ lib/WTSI/DNAP/Utilities/Runnable.pm
 lib/WTSI/DNAP/Utilities/Startable.pm
 MANIFEST			This list of files
 README
+t/bin/test_log_config.pl
 t/bin/true.sh
 t/cacheable.t
+t/configure_logger.t
 t/critic.t
 t/jsoncodec.t
 t/lib/WTSI/DNAP/Utilities/CacheableTest.pm
+t/lib/WTSI/DNAP/Utilities/ConfigureLoggerTest.pm
 t/lib/WTSI/DNAP/Utilities/JSONCodecTest.pm
 t/lib/WTSI/DNAP/Utilities/LoggableTest.pm
 t/lib/WTSI/DNAP/Utilities/RunnableTest.pm
