@@ -50,6 +50,8 @@ sub init_from_config_file : Test(3) {
 
     my $cmd = "$log_script --config $config_path";
 
+    `pwd`;
+    `ls`;
     ok(system($cmd)==0, "Command '$cmd' exit status OK");
 
     ok(system("grep '$info_string' $log_path > /dev/null") == 0,
