@@ -55,6 +55,14 @@ sub init_from_config_file : Test(3) {
     print STDERR `ls`;
     print STDERR "\n";
 
+    print STDERR "ls t/bin: ";
+    print STDERR `ls t/bin`;
+    print STDERR "\n";
+
+    print STDERR "ls $log_script: ";
+    print STDERR `ls $log_script`;
+    print STDERR "\n";
+
     my $cmd = "$log_script --config $config_path";
 
     ok(system($cmd)==0, "Command '$cmd' exit status OK");
