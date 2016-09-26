@@ -10,6 +10,9 @@ env:
     - secure: dKPOE1g9wVNXX84n3FHohLOAmyAARGdUdj7bkplEL45+ZBLBJYZrvohP479Wx0YRfp0jC/5lXU0mG5SDlDomFHg2gOIBkDw4mDnaoVdwiyj2H953w7o+/azy6oq3cWsbcGEe9P/IRJrmjrB8p8G+nm4Na/YAaR1MGHmhyU7VqFE=
 
 script:
+  pwd
+  ls
+  env
   perl Build.PL && ./Build test
 
 after_success:
