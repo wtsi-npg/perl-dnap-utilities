@@ -12,7 +12,8 @@ env:
 script:
   - pwd
   - ls
-  - env
+  - ls t
+  - ls t/bin
   - perl Build.PL && ./Build test
 
 after_success:
