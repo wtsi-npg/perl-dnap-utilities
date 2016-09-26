@@ -48,7 +48,7 @@ sub init_from_config_file : Test(3) {
         $log->logcroak("Cannot close temporary logconf path '",
                        $config_path, "': $!");
 
-    my $cmd = "$log_script --config $config_path 2> /dev/null";
+    my $cmd = "$log_script --config $config_path";
 
     ok(system($cmd)==0, "Command '$cmd' exit status OK");
 
@@ -64,7 +64,7 @@ sub init_from_output_path : Test(3) {
     my $tmp = tempdir('ConfigureLoggerTest_XXXXXX', CLEANUP => 1);
     my $log_path = $tmp."/init_from_output_path.log";
 
-    my $cmd = "$log_script --output $log_path --verbose 2> /dev/null";
+    my $cmd = "$log_script --output $log_path --verbose";
     ok(system($cmd)==0, "Command '$cmd' exit status OK");
 
     ok(system("grep '$info_string' $log_path > /dev/null") == 0,
