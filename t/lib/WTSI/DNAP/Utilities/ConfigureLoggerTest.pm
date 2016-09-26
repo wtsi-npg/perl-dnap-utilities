@@ -48,6 +48,13 @@ sub init_from_config_file : Test(3) {
         $log->logcroak("Cannot close temporary logconf path '",
                        $config_path, "': $!");
 
+    print STDERR "pwd: ";
+    print STDERR `pwd`;
+    print STDERR "\n";
+    print STDERR "ls: ";
+    print STDERR `ls`;
+    print STDERR "\n";
+
     my $cmd = "$log_script --config $config_path";
 
     ok(system($cmd)==0, "Command '$cmd' exit status OK");
