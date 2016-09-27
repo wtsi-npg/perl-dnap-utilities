@@ -17,13 +17,13 @@ run() unless caller();
 sub run {
 
     my $debug;
-    my $log_config_path;
+    my $log_config;
     my $log_output_path;
     my $verbose;
 
     GetOptions(
         'debug'        => \$debug,
-        'config=s'     => \$log_config_path,
+        'config=s'     => \$log_config,
         'output=s'     => \$log_output_path,
         'verbose'      => \$verbose,
     );
@@ -31,7 +31,14 @@ sub run {
     my @log_levels;
     if ($debug) { push @log_levels, $DEBUG; }
     if ($verbose) { push @log_levels, $INFO; }
-    log_init($log_config_path, $log_output_path, \@log_levels);
+
+    my %args = (
+        config => $log_config,
+        file   => $log_output_path,
+        levels => \@log_levels,
+        stderr => 0, # no log output to STDERR
+    );
+    log_init(%args);
     my $log = Log::Log4perl->get_logger('main');
 
     $log->debug("Testing log debug output");

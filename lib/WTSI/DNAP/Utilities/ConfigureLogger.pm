@@ -15,57 +15,129 @@ our $VERSION = '';
 
 our $DEFAULT_LOG_LEVEL = $ERROR;
 
+our $CONFIG_KEY   = 'config';
+our $LEVELS_KEY   = 'levels';
+our $STDERR_KEY   = 'stderr';
+our $STDOUT_KEY   = 'stdout';
+our $FILE_KEY     = 'file';
+our $CATEGORY_KEY = 'category';
+our $LAYOUT_KEY   = 'layout';
+our $UTF8_KEY     = 'utf8';
+our @ALL_KEYS = ($CONFIG_KEY, $LEVELS_KEY, $STDERR_KEY, $STDOUT_KEY,
+                 $FILE_KEY, $CATEGORY_KEY, $LAYOUT_KEY, $UTF8_KEY);
+
 =head2 log_init
 
-  Arg [1]    : Maybe [Str] path to Log4perl config file
-  Arg [2]    : Maybe [Str] path to output file
-  Arg [3]    : Maybe [ArrayRef[Int]] Log4perl levels
+B<Arg [1]> :    [Hash] Arguments for log config
 
-  Example    : log_init($config, $logfile, $log_levels);
+B<Example> :    log_init(%args);
 
-  Description: Initializes logging with Log4perl.
+B<Description:> Initializes logging with Log4perl.
 
-               Must supply either a log4perl config file path; or
-               an output path. If the first argument is defined, the
-               second and third arguments are ignored; otherwise,
-               the second and third arguments are used.
+Argument is a Hash. If any key/value pairs are omitted, default values will
+be used. The following key/value pairs are allowed:
 
-               If defined, the third argument is an ArrayRef of Log4perl
-               numeric level constants. Logging will be at the most verbose
-               level in the ArrayRef, or a default level otherwise. See
-               the most_verbose function for details.
+=over
 
-  Returntype : True if initialization succeeded; croaks otherwise.
+=item *
 
-  Caller     : general
+I<config>:   String or StringRef. A log4perl config value. Either a string
+with the path to a config file, or a string reference containing the
+configuration. If defined, config will override all other arguments.
+
+=item *
+
+I<levels>:   ArrayRef. Contains zero or more Log4perl numeric level
+identifiers. The log level will be the most verbose value in the ArrayRef,
+or a default value if the ArrayRef is empty.
+
+=item *
+
+I<stderr>:   Boolean. If True, write log output to STDERR.
+Default value is True.
+
+=item *
+
+I<stdout>:   Boolean. If True, write log output to STDOUT.
+Default value is False.
+
+=item *
+
+I<file>:     String. If defined, write log output to the given path.
+
+=item *
+
+I<category>: String. If defined, use the given Log4perl category for
+the logger.
+
+=item *
+
+I<layout>:   String. If defined, use the given layout format for logging;
+otherwise, use a default layout.
+
+=item *
+
+I<utf8>:     Boolean. If True, use utf8 encoding for output.
+Default value is True.
+
+=back
+
+B<Returntype> : True if initialization succeeded; croaks otherwise.
+
+B<Caller>     : general
 
 =cut
 
 sub log_init {
-    my ($log4perl_config, $log_path, $log_levels) = @_;
-    if (defined $log4perl_config ) {
-        if (! -r $log4perl_config) {
-            croak("Cannot read log4perl config path '", $log4perl_config,
-                  "': $!");
+    my %args = @_;
+
+    # customised arguments
+    my $config  = $args{$CONFIG_KEY};
+    my $levels  = $args{$LEVELS_KEY};
+    my $stderr  = $args{$STDERR_KEY};
+    my $stdout  = $args{$STDOUT_KEY};
+    my $file    = $args{$FILE_KEY};
+    # arguments given directly to easy_init
+    my $category = $args{$CATEGORY_KEY};
+    my $layout   = $args{$LAYOUT_KEY} || '%d %p %m %n';
+    my $utf8     = $args{$UTF8_KEY} || 1;
+
+    # check for invalid hash keys
+    my %all_keys;
+    foreach my $key (@ALL_KEYS) { $all_keys{$key} = 1; }
+    foreach my $key (keys %args) {
+        if (! $all_keys{$key}) {
+            carp("Invalid argument key '", $key, "' supplied to log_init; ",
+                 "permitted keys are: (", (join ', ', @ALL_KEYS), ")");
         }
-    } elsif (! defined $log_path ) {
-        croak("Must supply either a log4perl config path, ",
-              "or an output path: $!");
     }
-    # configure and initialise log
-    if ($log4perl_config) {
-        Log::Log4perl::init($log4perl_config);
+
+    # configure and initialise logging
+    if (defined $config) {
+        Log::Log4perl::init($config);
     } else {
-        my $level = most_verbose($log_levels);
-        my @log_args = ({layout => '%d %p %m %n',
-                         level  => $level,
-                         file     => ">>$log_path",
-                         utf8   => 1},
-                        {layout => '%d %p %m %n',
-                         level  => $level,
-                         file   => "STDERR",
-                         utf8   => 1},
-                    );
+        my @log_args;
+        my $common_args = {
+            layout => $layout,
+            level  => most_verbose($levels),
+            utf8   => $utf8,
+        };
+        if (defined $category) { $common_args->{'category'} = $category; }
+        if ($file) {
+            my $args = { %$common_args }; # copies the $common_args hashref
+            $args->{'file'} = ">>$file";
+            push @log_args, $args;
+        }
+        if ($stderr || ! defined $stderr) { # write to STDERR by default
+            my $args = { %$common_args }; # copies the $common_args hashref
+            $args->{'file'} = "STDERR";
+            push @log_args, $args;
+        }
+        if ($stdout) {
+            my $args = { %$common_args }; # copies the $common_args hashref
+            $args->{'file'} = "STDOUT";
+            push @log_args, $args;
+        }
         Log::Log4perl->easy_init(@log_args);
     }
     my $init_ok = Log::Log4perl->initialized();
