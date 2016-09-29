@@ -1,7 +1,6 @@
 package WTSI::DNAP::Utilities::Collector;
 
-use utf8;
-
+use namespace::autoclean;
 use DateTime;
 use File::Find;
 use File::stat;
@@ -22,14 +21,14 @@ has 'depth' =>
   (is       => 'ro',
    isa      => 'Maybe[Int]',
    documentation => "Maximum depth of search",
-   default  => sub { undef; } );
+   default  => undef);
 
 has 'regex' =>
   (is       => 'ro',
    isa      => 'Maybe[RegexpRef]',
    lazy     => 1,
    documentation => "Regular expression to filter files/directories",
-   default  => sub { undef; } );
+   default  => undef);
 
 has 'start_depth' =>
   (is       => 'ro',
@@ -336,11 +335,11 @@ sub stat_mtime {
     return $mtime;
 }
 
+__PACKAGE__->meta->make_immutable;
 
 no Moose;
 
 1;
-
 
 
 __END__
