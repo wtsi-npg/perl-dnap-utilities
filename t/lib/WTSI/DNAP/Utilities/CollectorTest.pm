@@ -54,7 +54,7 @@ sub test_collect_files : Test(4) {
           root  => $collect_path,
           depth => $depths[$i],
       );
-      is_deeply([$collector->collect_files($file_test)],
+      is_deeply([sort $collector->collect_files($file_test)],
                 $expected[$i]);
   }
 }
@@ -96,7 +96,7 @@ sub test_collect_dirs : Test(5) {
           root  => $collect_path,
           depth => $depths[$i],
       );
-      is_deeply([$collector->collect_dirs($dir_test)],
+      is_deeply([sort $collector->collect_dirs($dir_test)],
                 $expected[$i]);
   }
 
@@ -105,7 +105,7 @@ sub test_collect_dirs : Test(5) {
       root  => $collect_path,
       depth => 2,
       regex => qr/^[ab]$/msx);
-  is_deeply([$collector->collect_dirs($dir_test)],
+  is_deeply([sort $collector->collect_dirs($dir_test)],
             ["$collect_path/a",
              "$collect_path/b"]);
 }
