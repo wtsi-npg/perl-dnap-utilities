@@ -1,3 +1,7 @@
+Release 0.5.3
+ - New module ConfigureLogger.pm, for convenient log setup
+ - Moved in the Collector class from wtsi-npg/genotyping
+
 Release 0.5.2
 
  - Configure logger using the fully qualified name of the Moose metaclass.
