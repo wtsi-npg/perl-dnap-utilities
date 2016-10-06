@@ -7,7 +7,7 @@ use warnings;
 use File::Temp qw(tempfile);
 
 use base qw(Test::Class);
-use Test::More tests => 11;
+use Test::More tests => 16;
 use Test::Exception;
 
 use Log::Log4perl;
@@ -20,7 +20,7 @@ use WTSI::DNAP::Utilities::Collector;
 
 my $data_path = './t/collector';
 
-sub test_collect_files : Test(4) {
+sub test_collect_files : Test(8) {
 
   # Accept all files
   my $file_test = sub {
@@ -57,9 +57,19 @@ sub test_collect_files : Test(4) {
       is_deeply([sort $collector->collect_files($file_test)],
                 $expected[$i]);
   }
+  # again, without a defined file test
+  for (my $i=0;$i<@depths;$i++) {
+      my $collector = WTSI::DNAP::Utilities::Collector->new(
+          root  => $collect_path,
+          depth => $depths[$i],
+      );
+      is_deeply([sort $collector->collect_files()],
+                $expected[$i]);
+  }
+
 }
 
-sub test_collect_dirs : Test(5) {
+sub test_collect_dirs : Test(6) {
 
   # Accept all dirs
   my $dir_test = sub {
@@ -108,6 +118,12 @@ sub test_collect_dirs : Test(5) {
   is_deeply([sort $collector->collect_dirs($dir_test)],
             ["$collect_path/a",
              "$collect_path/b"]);
+
+  # collect with undefined test
+  is_deeply([sort $collector->collect_dirs()],
+            ["$collect_path/a",
+             "$collect_path/b"]);
+
 }
 
 sub test_modified_between : Test(1) {
