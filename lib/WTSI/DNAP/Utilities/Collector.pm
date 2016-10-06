@@ -92,6 +92,11 @@ sub _build_stop_depth {
 
 sub collect_dirs {
   my ($self, $test) = @_;
+  if (! $test) {
+      $test = sub { return 1; };
+      $self->debug("Directory test not found, returning all ",
+                   "directories in tree rooted at '", $self->root, q{'});
+  }
   my @dirs;
   my $collector = $self->make_collector_function($test, \@dirs);
 
@@ -177,6 +182,11 @@ sub collect_dirs_modified_between {
 
 sub collect_files {
   my ($self, $test) = @_;
+  if (! $test) {
+      $test = sub { return 1; };
+      $self->debug("File test not found, returning all files in ",
+                   "directory tree rooted at '", $self->root, q{'});
+  }
   my @files;
   my $collector = $self->make_collector_function($test, \@files);
 
