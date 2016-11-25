@@ -1,46 +1,46 @@
 package WTSI::DNAP::Utilities::LDAP;
 
-use strict;
-use warnings;
+use namespace::autoclean;
 use Net::LDAP;
-use Exporter qw(import);
-use Log::Log4perl;
+use Moose;
+use MooseX::StrictConstructor;
 
-my $log = Log::Log4perl->get_logger();
-
-our @EXPORT_OK = qw(
-                    setup_ldap
-                    unbind_ldap
-                    find_group_ids
-                    find_primary_gid
-                   );
+with 'WTSI::DNAP::Utilities::Loggable';
 
 our $VERSION = '';
 
 my $host = 'ldap.internal.sanger.ac.uk';
 
-sub setup_ldap {
+has ldap =>
+  (is            => 'ro',
+   isa           => 'Net::LDAP',
+   required      => 1,
+   lazy_build    => 1,
+   documentation => 'LDAP connection for retrieving user and group information'
+  );
+sub _build_ldap{
+  my ($self) = @_;
   my $ldap = Net::LDAP->new($host);
-  $ldap->bind or $log->logcroak("LDAP failed to bind to '$host': ", $!);
+  $ldap->bind or $self->logcroak("LDAP failed to bind to '$host': ", $!);
   return $ldap;
 }
 
-sub unbind_ldap {
-  my ($ldap) = @_;
-  $ldap->unbind or $log->logwarn("LDAP failed to unbind '$host': ", $!);
+sub DEMOLISH {
+  my ($self) = @_;
+  $self->ldap->unbind or $self->logwarn("LDAP failed to unbind '$host': ", $!);
   return;
 }
 
 sub find_group_ids {
-  my ($ld) = @_;
+  my ($self) = @_;
 
   my $query_base   = 'ou=group,dc=sanger,dc=ac,dc=uk';
   my $query_filter = '(cn=*)';
-  my $search = $ld->search(base   => $query_base,
-                           filter => $query_filter);
+  my $search = $self->ldap->search(base   => $query_base,
+                                   filter => $query_filter);
   if ($search->code) {
-    $log->logcroak("LDAP query base: '$query_base', filter: '$query_filter' ",
-                   'failed: ', $search->error);
+    $self->logcroak("LDAP query base: '$query_base', filter: '$query_filter' ",
+                    'failed: ', $search->error);
   }
 
   my %group2users;
@@ -50,22 +50,22 @@ sub find_group_ids {
     my $gid     = $entry->get_value('gidNumber');
     my @uids    = $entry->get_value('memberUid');
     $group2users{$group} = \@uids;
-    $gid2group{$gid}    = $group;
+    $gid2group{$gid}     = $group;
   }
 
   return (\%group2users, \%gid2group);
 }
 
 sub find_primary_gid {
-  my ($ld) = @_;
+  my ($self) = @_;
 
   my $query_base   = 'ou=people,dc=sanger,dc=ac,dc=uk';
   my $query_filter = '(sangerActiveAccount=TRUE)';
-  my $search = $ld->search(base   => $query_base,
-                           filter => $query_filter);
+  my $search = $self->ldap->search(base   => $query_base,
+                                   filter => $query_filter);
   if ($search->code) {
-    $log->logcroak("LDAP query base: '$query_base', filter: '$query_filter' ",
-                   'failed: ', $search->error);
+    $self->logcroak("LDAP query base: '$query_base', filter: '$query_filter' ",
+                    'failed: ', $search->error);
   }
 
   my %user2gid;
@@ -75,6 +75,10 @@ sub find_primary_gid {
 
   return \%user2gid;
 }
+
+__PACKAGE__->meta->make_immutable;
+
+no Moose;
 
 1;
 

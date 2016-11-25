@@ -1,10 +1,10 @@
 use strict;
 use warnings;
-use Test::More tests => 5;
+use Test::More tests => 3;
 
-my @subs = qw/ setup_ldap unbind_ldap find_group_ids find_primary_gid /;
-use_ok('WTSI::DNAP::Utilities::LDAP', @subs);
+my @methods = qw/ find_group_ids find_primary_gid /;
+use_ok('WTSI::DNAP::Utilities::LDAP');
 
-foreach my $sub (@subs) {
-    can_ok(__PACKAGE__, $sub);
+foreach my $sub (@methods) {
+    can_ok(q(WTSI::DNAP::Utilities::LDAP), $sub);
 }
