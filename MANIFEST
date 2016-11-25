@@ -10,6 +10,7 @@ lib/WTSI/DNAP/Utilities/ConfigureLogger.pm
 lib/WTSI/DNAP/Utilities/Executable.pm
 lib/WTSI/DNAP/Utilities/IO.pm
 lib/WTSI/DNAP/Utilities/JSONCodec.pm
+lib/WTSI/DNAP/Utilities/LDAP.pm
 lib/WTSI/DNAP/Utilities/Loggable.pm
 lib/WTSI/DNAP/Utilities/Runnable.pm
 lib/WTSI/DNAP/Utilities/Startable.pm
