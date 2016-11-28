@@ -29,6 +29,7 @@ t/collector/collect_files/c/z/3.txt
 t/configure_logger.t
 t/critic.t
 t/jsoncodec.t
+t/ldap.t
 t/lib/WTSI/DNAP/Utilities/CacheableTest.pm
 t/lib/WTSI/DNAP/Utilities/CollectorTest.pm
 t/lib/WTSI/DNAP/Utilities/ConfigureLoggerTest.pm

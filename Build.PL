@@ -36,6 +36,7 @@ my $build = WTSI::DNAP::Utilities::Build->new
                           'JSON'               => '>= 2.61',
                           'Log::Log4perl'      => '>= 1.42',
                           'Moose'              => '>= 2.1',
+                          'Net::LDAP'          => '>= 0.58',
                           'Try::Tiny'          => '>= 0.12'
                          });
 
