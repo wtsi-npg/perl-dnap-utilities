@@ -1,3 +1,4 @@
+Release 0.5.4
  - New module LDAP.pm, for querying user and group ids from Sanger internal LDAP.
 
 Release 0.5.3
