@@ -8,9 +8,9 @@ use Log::Log4perl qw(:easy);
 our $VERSION = '';
 
 sub PRINT {
-  my $self = shift;
+  my ($self, @m) = @_;
   $Log::Log4perl::caller_depth++;
-  WARN @_;
+  WARN @m;
   $Log::Log4perl::caller_depth--;
   return;
 }

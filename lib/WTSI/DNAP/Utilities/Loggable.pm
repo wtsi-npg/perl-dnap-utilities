@@ -31,7 +31,7 @@ parameter 'stderr2log' => (isa      => 'Bool',
                            is       => 'ro',);
 
 role {
-  my $stderr2log = shift;
+  my $parameter = shift;
 
   has 'logger' => (is      => 'rw',
                    isa     => 'Log::Log4perl::Logger',
@@ -52,23 +52,25 @@ role {
                    "configuration by the logger builder of '$class_name'");
     } else {
       $logger = Log::Log4perl->get_logger($class_name);
-
-      # STDERR is redirected to a log at warn level. If this level is
-      # not available, do not redirect.
-      if ($logger->isWarnEnabled() && $stderr2log) {
-        my $appenders = Log::Log4perl->appenders();
-        # Check whether any of the existing appenders outout to STDERR.
-        my $has_stderr_output = any { $_ }
-                                map {$appenders->{$_}->{'appender'}->{'stderr'}}
-                                keys %{$appenders};
-        if (!$has_stderr_output) {
-          load_class 'WTSI::DNAP::Utilities::Loggable::Redirected';
-          tie *STDERR, 'WTSI::DNAP::Utilities::Loggable::Redirected';
-        }
-      }   
+      $self->_redirect_stderr($logger);
     }
 
     return $logger;
+  };
+
+  method _redirect_stderr => sub {
+    my ($self, $logger) = @_;
+
+    # STDERR is redirected to a log at warn level. If this level is
+    # not available, do not redirect.
+    if ($logger->isWarnEnabled() && $parameter->stderr2log()) {
+      load_class 'WTSI::DNAP::Utilities::Loggable::Redirected';
+      ## no critic (Miscellanea::ProhibitTies)
+      tie *STDERR, 'WTSI::DNAP::Utilities::Loggable::Redirected';
+      ## use critic
+      $logger->debug('STDERR is redirected to a log.');
+    }
+    return;
   };
 
 };
@@ -99,15 +101,17 @@ has a default logger addressable by the string
 
  log4perl.logger.WTSI.NPG.iRODS
 
-This role accepts a boolean parameter stderr2log, which is false by
-default.
+This role accepts a boolean parameter, stderr2log, which is false by
+default. Enabling this parameter
 
   with 'WTSI::DNAP::Utilities::Loggable' => { stderr2log => 1 };
 
-Enabling this parameter has an effect of redirecting standard error
-stream to the log. Redirection is not activated if one of the existing
-appenders already outputs to standard error or if the log level does not
-support logging warnings.
+has an effect of redirecting standard error to the log. Redirection is not
+activated if the log level does not support logging warnings.
+
+The stderr2log parameter should not be enabled if one of the appenders
+is configured or might be configured at run time to output to
+standard error.
 
 Broader logging may be enabled by configuring a logger higher up the
 class hierarchy e.g.

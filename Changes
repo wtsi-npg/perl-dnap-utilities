@@ -1,3 +1,6 @@
+ - Loggable role extended to optionally redirect standard error output
+   to a log/logs it handles.
+
 Release 0.5.4
  - New module LDAP.pm, for querying user and group ids from Sanger internal LDAP.
 
