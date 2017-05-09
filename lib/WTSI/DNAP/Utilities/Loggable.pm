@@ -3,7 +3,9 @@ package WTSI::DNAP::Utilities::Loggable;
 use strict;
 use warnings;
 use Log::Log4perl;
-use Moose::Role;
+use MooseX::Role::Parameterized;
+use List::MoreUtils qw(any);
+use Class::Load qw(load_class);
 
 our $VERSION = '';
 
@@ -24,30 +26,52 @@ our @HANDLED_LOG_METHODS = qw(trace debug info warn error fatal
                               logwarn logdie
                               logcarp logcluck logconfess logcroak);
 
-has 'logger' => (is      => 'rw',
-                 isa     => 'Log::Log4perl::Logger',
-                 handles => [@HANDLED_LOG_METHODS],
-                 lazy    => 1,
-                 builder => '_build_logger');
+parameter 'stderr2log' => (isa      => 'Bool',
+                           required => 0,
+                           is       => 'ro',);
 
-sub _build_logger {
-  my ($self) = @_;
+role {
+  my $stderr2log = shift;
 
-  my $class_name = $self->meta->name;
-  my $logger;
+  has 'logger' => (is      => 'rw',
+                   isa     => 'Log::Log4perl::Logger',
+                   handles => [@HANDLED_LOG_METHODS],
+                   lazy    => 1,
+                   builder => '_build_logger');
 
-  if (not Log::Log4perl->initialized) {
-    Log::Log4perl->init_once(\$default_conf);
-    $logger = Log::Log4perl->get_logger($class_name);
-    $logger->debug('Log4perl was initialised with default fallback ',
+  method _build_logger => sub {
+    my $self = shift;
+
+    my $class_name = $self->meta->name;
+    my $logger;
+
+    if (not Log::Log4perl->initialized) {
+      Log::Log4perl->init_once(\$default_conf);
+      $logger = Log::Log4perl->get_logger($class_name);
+      $logger->debug('Log4perl was initialised with default fallback ',
                    "configuration by the logger builder of '$class_name'");
-  }
-  else {
-    $logger = Log::Log4perl->get_logger($class_name);
-  }
+    } else {
+      $logger = Log::Log4perl->get_logger($class_name);
 
-  return $logger;
-}
+      # STDERR is redirected to a log at warn level. If this level is
+      # not available, do not redirect.
+      if ($logger->isWarnEnabled() && $stderr2log) {
+        my $appenders = Log::Log4perl->appenders();
+        # Check whether any of the existing appenders outout to STDERR.
+        my $has_stderr_output = any { $_ }
+                                map {$appenders->{$_}->{'appender'}->{'stderr'}}
+                                keys %{$appenders};
+        if (!$has_stderr_output) {
+          load_class 'WTSI::DNAP::Utilities::Loggable::Redirected';
+          tie *STDERR, 'WTSI::DNAP::Utilities::Loggable::Redirected';
+        }
+      }   
+    }
+
+    return $logger;
+  };
+
+};
 
 no Moose;
 
@@ -75,6 +99,16 @@ has a default logger addressable by the string
 
  log4perl.logger.WTSI.NPG.iRODS
 
+This role accepts a boolean parameter stderr2log, which is false by
+default.
+
+  with 'WTSI::DNAP::Utilities::Loggable' => { stderr2log => 1 };
+
+Enabling this parameter has an effect of redirecting standard error
+stream to the log. Redirection is not activated if one of the existing
+appenders already outputs to standard error or if the log level does not
+support logging warnings.
+
 Broader logging may be enabled by configuring a logger higher up the
 class hierarchy e.g.
 
@@ -92,7 +126,7 @@ Keith James <kdj@sanger.ac.uk>
 
 =head1 COPYRIGHT AND DISCLAIMER
 
-Copyright (C) 2013, 2014, 2016 Genome Research Limited. All Rights
+Copyright (C) 2013, 2014, 2016, 2017 Genome Research Limited. All Rights
 Reserved.
 
 This program is free software: you can redistribute it and/or modify

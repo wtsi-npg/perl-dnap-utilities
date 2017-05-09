@@ -30,13 +30,17 @@ my $build = WTSI::DNAP::Utilities::Build->new
    requires =>           {
                           'Carp'                      => '>= 1.20',
                           'Cache::Cache'              => '>= 1.06',
+                          'Class::Load'               => '>= 0.24',
                           'Encode'                    => '>= 2.42',
                           'IPC::Run'                  => '>= 0.92',
                           'JSON'                      => '>= 2.61',
+                          'List::MoreUtils'           => '0',
                           'Log::Log4perl'             => '>= 1.42',
                           'Moose'                     => '>= 2.1',
+                          'MooseX::Role::Parameterized' => '>= 1.10',
                           'MooseX::StrictConstructor' => '>= 0.19',
                           'Net::LDAP'                 => '>= 0.58',
+                          'Tie::StdHandle'            => '>= 4.4',
                           'Try::Tiny'                 => '>= 0.12'
                          });
 
