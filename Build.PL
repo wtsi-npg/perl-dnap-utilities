@@ -42,7 +42,7 @@ my $build = WTSI::DNAP::Utilities::Build->new
                           'MooseX::Role::Parameterized' => '>= 1.10',
                           'MooseX::StrictConstructor' => '>= 0.19',
                           'Net::LDAP'                 => '>= 0.58',
-                          'Tie::StdHandle'            => '>= 4.4',
+                          'Tie::StdHandle'            => '0',
                           'Try::Tiny'                 => '>= 0.12'
                          });
 
