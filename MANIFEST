@@ -12,6 +12,7 @@ lib/WTSI/DNAP/Utilities/IO.pm
 lib/WTSI/DNAP/Utilities/JSONCodec.pm
 lib/WTSI/DNAP/Utilities/LDAP.pm
 lib/WTSI/DNAP/Utilities/Loggable.pm
+lib/WTSI/DNAP/Utilities/Loggable/Redirected.pm
 lib/WTSI/DNAP/Utilities/Runnable.pm
 lib/WTSI/DNAP/Utilities/Startable.pm
 MANIFEST			This list of files
