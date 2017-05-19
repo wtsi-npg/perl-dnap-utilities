@@ -21,15 +21,18 @@ my $build = WTSI::DNAP::Utilities::Build->new
                           'Module::Build'             => ">= 0.42"
                          },
    build_requires      => {
+                          'File::Slurp'               => '0',
                           'TAP::Harness'              => '>= 3.30',
                           'Test::Class'               => '>= 0.41',
                           'Test::More'                => '>= 0.98',
                           'Test::Exception'           => '>= 0.32',
-                          'Test::Perl::Critic'        => '>= 1.02'
+                          'Test::Perl::Critic'        => '>= 1.02',
+                          'Test::Warn'                => '0'
                          },
    requires =>           {
                           'Carp'                      => '>= 1.20',
                           'Cache::Cache'              => '>= 1.06',
+                          'Class::Load'               => '>= 0.24',
                           'Encode'                    => '>= 2.42',
                           'IPC::Run'                  => '>= 0.92',
                           'JSON'                      => '>= 2.61',
