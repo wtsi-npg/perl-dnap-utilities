@@ -147,9 +147,10 @@ sub _set_version {
   my ($self, @dirs) = @_;
   @dirs = grep { -d } @dirs;
 
+  my $version = $self->report_version;
   if (@dirs) {
     warn "Changing version of all modules and scripts to '" .
-      $self->dist_version . "'\n";
+      $version . "'\n";
 
     find({'follow'   => 0,
           'no_chdir' => 1,
@@ -162,7 +163,7 @@ sub _set_version {
               local @ARGV = ($module);
 
               while (my $line = <>) {
-                $self->_transform($line);
+                $self->_transform($version, $line);
               }
 
               unlink "$module$backup";
@@ -175,8 +176,7 @@ sub _set_version {
 }
 
 sub _transform {
-  my ($self, $line) = @_;
-  my $version = $self->dist_version;
+  my ($self, $version, $line) = @_;
 
   ##no critic (RequireExtendedFormatting RequireLineBoundaryMatching)
   ##no critic (RequireDotMatchAnything ProhibitUnusedCapture)
