@@ -128,7 +128,7 @@ sub ACTION_dist {
   print "Creating dist version file $version_file\n";
   open my $fh, '>', $version_file or
     die "Failed to open $version_file for writing: $!\n";
-  print $fh $self->dist_version, "\n";
+  print $fh $self->report_version, "\n";
   close $fh or carp "Failed to close $version_file cleanly\n";
 
   # If this is a repository, set the dist version from git
