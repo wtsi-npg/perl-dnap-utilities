@@ -69,7 +69,7 @@ sub report_version {
       die "Failed to open $DIST_VERSION_FILE for reading: $!\n";
     $version = <$fh>;
     chomp $version;
-    close $fh or carp "Failed to clode $DIST_VERSION_FILE cleanly\n";
+    close $fh or carp "Failed to close $DIST_VERSION_FILE cleanly\n";
   }
   else {
     $version = $self->git_tag;
@@ -128,7 +128,7 @@ sub ACTION_dist {
   print "Creating dist version file $version_file\n";
   open my $fh, '>', $version_file or
     die "Failed to open $version_file for writing: $!\n";
-  print $fh $self->dist_version, "\n";
+  print $fh $self->report_version, "\n";
   close $fh or carp "Failed to close $version_file cleanly\n";
 
   # If this is a repository, set the dist version from git
@@ -147,9 +147,10 @@ sub _set_version {
   my ($self, @dirs) = @_;
   @dirs = grep { -d } @dirs;
 
+  my $version = $self->report_version;
   if (@dirs) {
     warn "Changing version of all modules and scripts to '" .
-      $self->dist_version . "'\n";
+      $version . "'\n";
 
     find({'follow'   => 0,
           'no_chdir' => 1,
@@ -162,7 +163,7 @@ sub _set_version {
               local @ARGV = ($module);
 
               while (my $line = <>) {
-                $self->_transform($line);
+                $self->_transform($version, $line);
               }
 
               unlink "$module$backup";
@@ -175,8 +176,7 @@ sub _set_version {
 }
 
 sub _transform {
-  my ($self, $line) = @_;
-  my $version = $self->dist_version;
+  my ($self, $version, $line) = @_;
 
   ##no critic (RequireExtendedFormatting RequireLineBoundaryMatching)
   ##no critic (RequireDotMatchAnything ProhibitUnusedCapture)
