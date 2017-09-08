@@ -1,5 +1,6 @@
 .travis.yml
 Build.PL
+Changes
 COPYING
 etc/log4perl_tests.conf
 lib/WTSI/DNAP/Utilities.pm
@@ -16,6 +17,8 @@ lib/WTSI/DNAP/Utilities/Loggable/Redirected.pm
 lib/WTSI/DNAP/Utilities/Runnable.pm
 lib/WTSI/DNAP/Utilities/Startable.pm
 MANIFEST			This list of files
+META.json
+META.yml
 README
 t/bin/test_log_config.pl
 t/bin/true.sh
