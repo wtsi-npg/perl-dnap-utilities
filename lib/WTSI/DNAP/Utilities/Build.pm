@@ -69,7 +69,7 @@ sub report_version {
       die "Failed to open $DIST_VERSION_FILE for reading: $!\n";
     $version = <$fh>;
     chomp $version;
-    close $fh or carp "Failed to clode $DIST_VERSION_FILE cleanly\n";
+    close $fh or carp "Failed to close $DIST_VERSION_FILE cleanly\n";
   }
   else {
     $version = $self->git_tag;
