@@ -1,3 +1,6 @@
+Release 0.5.6
+- Module::Build custom builder - use internal report_version to avoid caching
+  issues with dist_version.
 
 Release 0.5.5
 - Loggable role extended to optionally redirect standard error output to a log/logs it handles.
