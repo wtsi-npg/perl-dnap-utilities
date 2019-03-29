@@ -1,3 +1,17 @@
+Release 0.5.6
+- Module::Build custom builder - use internal report_version to avoid caching
+  issues with dist_version.
+
+Release 0.5.5
+- Loggable role extended to optionally redirect standard error output to a log/logs it handles.
+
+Release 0.5.4
+ - New module LDAP.pm, for querying user and group ids from Sanger internal LDAP.
+
+Release 0.5.3
+ - New module ConfigureLogger.pm, for convenient log setup
+ - Moved in the Collector class from wtsi-npg/genotyping
+
 Release 0.5.2
 
  - Configure logger using the fully qualified name of the Moose metaclass.
