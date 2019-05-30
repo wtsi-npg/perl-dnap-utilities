@@ -33,6 +33,8 @@ my $build = WTSI::DNAP::Utilities::Build->new
                           'Carp'                      => '>= 1.20',
                           'Cache::Cache'              => '>= 1.06',
                           'Class::Load'               => '>= 0.24',
+                          'DateTime'                  => '0',
+                          'DateTime::Format::Strptime' => '0',
                           'Encode'                    => '>= 2.42',
                           'IPC::Run'                  => '>= 0.92',
                           'JSON'                      => '>= 2.61',
@@ -40,6 +42,7 @@ my $build = WTSI::DNAP::Utilities::Build->new
                           'Moose'                     => '>= 2.1',
                           'MooseX::StrictConstructor' => '>= 0.19',
                           'Net::LDAP'                 => '>= 0.58',
+                          'Readonly'                  => '0',
                           'Try::Tiny'                 => '>= 0.12'
                          });
 
