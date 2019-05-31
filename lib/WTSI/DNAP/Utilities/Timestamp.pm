@@ -28,12 +28,18 @@ sub create_current_timestamp {
 }
 
 sub parse_timestamp {
-  my $time_string = shift;
-  return DateTime::Format::Strptime->new(
+  my ($time_string, $zone) = @_;
+
+  $zone ||= $DEFAULT_TIMEZONE;
+  my $dt = DateTime::Format::Strptime->new(
              pattern  => $TIMESTAMP_FORMAT_WOFFSET,
              strict   => 1, # match the pattern exactly
              on_error => 'croak'
   )->parse_datetime($time_string);
+
+  $dt->set_time_zone($zone);
+
+  return $dt;
 }
 
 1;
@@ -65,21 +71,29 @@ Creates a timestamp string for the current time using the local
 time zone by default. The time zone can be changed by passing
 the time zone argument.
   
-  create_current_timestamp();
-  create_current_timestamp('America/Chicago');
+  my $dt_string = create_current_timestamp();
+  my $dt_string = create_current_timestamp('America/Chicago');
 
 =head2 create_timestamp
 
 Creates a timestamp string for the DateTime object passed as an argument.
 
-  create_timestamp($datetime_obj);
+  my $dt_string = create_timestamp($datetime_obj);
 
 =head2 parse_timestamp
 
-Parses the argument string and returns a DateTime object. Errors if
-the argument string does not conform to the format used in this package.
+Parses the argument string and returns a DateTime object. If a time zone
+string is passed as aa second  argument, the time zone of this object is
+set to that time zone, otherwise the default 'local' time zone is used.
 
-  parse_timestamp('2019-05-27T03:08:57+0100');
+When the 'local' timezone is used, the object is localised to the time
+zone on the host where this method is executed, which allows to follow
+the DST time change correctly.
+
+Errors if the argument string does not conform to the format used in
+this package.
+
+  my $date_time_obj = parse_timestamp('2019-05-27T03:08:57+0100');
 
 =head1 DIAGNOSTICS
 

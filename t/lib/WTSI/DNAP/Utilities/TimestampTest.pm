@@ -19,7 +19,7 @@ sub generate : Test(3) {
   like (create_timestamp(DateTime->now()), $pattern, 'correct string pattern');
 }
 
-sub parse : Test(3) {
+sub parse : Test(5) {
   throws_ok { parse_timestamp('2019-05-27T03:08:57') }
     qr/Your datetime does not match your pattern/,
     'error if the timestamp string does not conform to expected format';
@@ -27,6 +27,12 @@ sub parse : Test(3) {
   lives_ok { $obj = parse_timestamp('2019-05-27T03:08:57+0100') }
     'no error parsing';
   isa_ok ($obj, 'DateTime');
+  my $now = DateTime->now();
+  $now->set_time_zone('local');
+  is ($obj->time_zone->name, $now->time_zone->name, 'time zone is set correctly');
+  
+  $obj = parse_timestamp('2019-05-27T03:08:57+0100', 'America/Chicago');
+  is ($obj->time_zone->name, 'America/Chicago', 'time zone is set correctly');
 }
 
 1;
