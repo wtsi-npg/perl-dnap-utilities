@@ -16,6 +16,7 @@ lib/WTSI/DNAP/Utilities/Loggable.pm
 lib/WTSI/DNAP/Utilities/Loggable/Redirected.pm
 lib/WTSI/DNAP/Utilities/Runnable.pm
 lib/WTSI/DNAP/Utilities/Startable.pm
+lib/WTSI/DNAP/Utilities/Timestamp.pm
 MANIFEST			This list of files
 META.json
 META.yml
@@ -41,9 +42,11 @@ t/lib/WTSI/DNAP/Utilities/JSONCodecTest.pm
 t/lib/WTSI/DNAP/Utilities/LoggableTest.pm
 t/lib/WTSI/DNAP/Utilities/RunnableTest.pm
 t/lib/WTSI/DNAP/Utilities/StartableTest.pm
+t/lib/WTSI/DNAP/Utilities/TimestampTest.pm
 t/lib/WTSI/DNAP/UtilitiesTest.pm
 t/loggable.t
 t/perlcriticrc
 t/runnable.t
 t/startable.t
+t/timestamp.t
 t/utilities.t
