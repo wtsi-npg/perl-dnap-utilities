@@ -1,3 +1,9 @@
+Upcoming
+ -
+ 
+Release 0.5.8
+- Improved test robustness across Linux/MacOS
+
 Release 0.5.7
 - New module Timestamp for generating an dprsing RFC 3339 compliant timestamps
 
