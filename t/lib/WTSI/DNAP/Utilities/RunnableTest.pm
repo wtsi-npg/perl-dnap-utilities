@@ -6,6 +6,7 @@ use warnings;
 use base qw(Test::Class);
 use Test::Exception;
 use Test::More;
+use Test::Deep;
 
 use WTSI::DNAP::Utilities::Runnable;
 
@@ -30,8 +31,8 @@ sub pipe : Test(2) {
   my $cat = WTSI::DNAP::Utilities::Runnable->new(executable => 'cat');
   my $wc = WTSI::DNAP::Utilities::Runnable->new(executable  => 'wc');
 
-  is_deeply([$echo->pipe($cat, $wc)->split_stdout],
-            ['      1       1       6']);
+  cmp_deeply([$echo->pipe($cat, $wc)->split_stdout],
+            [re('\s*1       1       6')]);
 
   my $false = WTSI::DNAP::Utilities::Runnable->new(executable => 'false');
   dies_ok { $echo->pipe($cat, $false, $wc) }, 'Detects pipe failure';
