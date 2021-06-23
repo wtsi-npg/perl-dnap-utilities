@@ -1,6 +1,9 @@
 Upcoming
  -
- 
+
+Release 0.5.9
+- Move from Travis CI to GitHub Actions
+
 Release 0.5.8
 - Improved test robustness across Linux/MacOS
 

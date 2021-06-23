@@ -1,0 +1,61 @@
+name: "Unit tests"
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+
+    defaults:
+      run:
+        shell: bash -l -e -o pipefail {0}
+
+    env:
+      CACHE: ~/perl5
+
+    strategy:
+      matrix:
+        perl: [ "5.22.4" ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: "Cache Perl"
+        id: cache-perl
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.CACHE }}
+          key: ${{ runner.os }}-${{ matrix.perl }}-perl
+
+      - name: "Install Perlbrew"
+        if: steps.cache-perl.outputs.cache-hit != 'true'
+        run: |
+          curl -sSL https://install.perlbrew.pl -o perlbrew.sh
+          sha256sum -c .github/workflows/perlbrew.sha256
+          export PERLBREW_ROOT=${{ env.CACHE }}
+          sh perlbrew.sh
+
+          source ${{ env.CACHE }}/etc/bashrc
+          perlbrew available
+          perlbrew install --notest perl-${{ matrix.perl }}
+          perlbrew use perl-${{ matrix.perl }}
+          perlbrew install-cpanm
+
+      - name: "Initialize Perlbrew"
+        run: |
+          echo "source ${{ env.CACHE }}/etc/bashrc" >> "$HOME/.bash_profile"
+
+      - name: "Install CPAN dependencies"
+        run: |
+          cpanm --local-lib=${{ env.CACHE }} local::lib && \
+            eval $(perl -I ${{ env.CACHE }}/lib/perl5/ -Mlocal::lib)
+          cpanm --installdeps --notest .
+
+      - name: "Run tests"
+        run: |
+          cpanm --local-lib=${{ env.CACHE }} local::lib && \
+            eval $(perl -I ${{ env.CACHE }}/lib/perl5/ -Mlocal::lib)
+          export PERL5LIB="$PWD:$PERL5LIB"
+
+          perl Build.PL
+          ./Build test
