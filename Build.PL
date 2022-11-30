@@ -38,6 +38,7 @@ my $build = WTSI::DNAP::Utilities::Build->new
                           'Encode'                    => '>= 2.42',
                           'IPC::Run'                  => '>= 0.92',
                           'JSON'                      => '>= 2.61',
+                          'List::MoreUtils'           => 0,
                           'Log::Log4perl'             => '>= 1.42',
                           'Moose'                     => '>= 2.1',
                           'MooseX::StrictConstructor' => '>= 0.19',
