@@ -9,7 +9,7 @@ use Test::More;
 use Test::Exception;
 use Test::LWP::UserAgent;
 
-use base qw[WTSI::NPG::HTS::Test];
+use base qw(Test::Class);
 
 use WTSI::NPG::HTS::PacBio::Sequel::APIClient;
 
