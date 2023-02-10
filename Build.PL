@@ -26,6 +26,7 @@ my $build = WTSI::DNAP::Utilities::Build->new
                           'Test::Class'               => '>= 0.41',
                           'Test::More'                => '>= 0.98',
                           'Test::Exception'           => '>= 0.32',
+                          'Test::LWP::UserAgent'      => '0',
                           'Test::Perl::Critic'        => '>= 1.02',
                           'Test::Warn'                => '0'
                          },
@@ -38,13 +39,16 @@ my $build = WTSI::DNAP::Utilities::Build->new
                           'Encode'                    => '>= 2.42',
                           'IPC::Run'                  => '>= 0.92',
                           'JSON'                      => '>= 2.61',
-                          'List::MoreUtils'           => 0,
+                          'List::MoreUtils'           => '0',
                           'Log::Log4perl'             => '>= 1.42',
+                          'LWP::UserAgent'            => '0',
                           'Moose'                     => '>= 2.1',
                           'MooseX::StrictConstructor' => '>= 0.19',
                           'Net::LDAP'                 => '>= 0.58',
                           'Readonly'                  => '0',
-                          'Try::Tiny'                 => '>= 0.12'
+                          'Try::Tiny'                 => '>= 0.12',
+                          'URI'                       => '0',
+                          'URI::Split'                => '0'
                          });
 
 $build->create_build_script;
