@@ -24,6 +24,7 @@ my $build = WTSI::DNAP::Utilities::Build->new
                           'File::Slurp'               => '0',
                           'TAP::Harness'              => '>= 3.30',
                           'Test::Class'               => '>= 0.41',
+                          'Test::Deep'                => '0',
                           'Test::More'                => '>= 0.98',
                           'Test::Exception'           => '>= 0.32',
                           'Test::LWP::UserAgent'      => '0',
