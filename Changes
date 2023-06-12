@@ -1,5 +1,10 @@
 Upcoming
 
+
+Release 0.6.1
+- Add Perl 5.34 to CI matrix
+- Add missing Test::Deep dependency
+
 Release 0.6.0
 - Moved sequel WTSI::NPG::HTS::PacBio::Sequel::APIClient client from the npg_irods
   git package to this package. This simplifies the dependency tree in git packages
