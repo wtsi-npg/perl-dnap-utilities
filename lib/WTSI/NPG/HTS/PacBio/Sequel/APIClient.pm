@@ -271,6 +271,30 @@ sub query_datasets {
   return [@datasets];
 }
 
+
+=head2 query_dataset
+
+  Arg [1]    : Dataset type. Required.
+  Arg [2]    : Dataset id. Required.
+
+  Example    : my $dataset = $client->query_dataset($type, $id)
+  Description: Query for dataset by type and id.
+  Returntype : HashRef
+
+=cut
+
+sub query_dataset {
+  my($self, $dataset_type, $dataset_id) = @_;
+
+  defined $dataset_type or
+      $self->logconfess('A defined dataset_type is required');
+
+  my $path = join q[/], q[smrt-link/datasets], $dataset_type, $dataset_id;
+  my ($dataset) = $self->_get_content($self->_get_uri($path)->clone);
+  return $dataset;
+}
+
+
 =head2 query_dataset_reports
 
   Arg [1]    : Dataset type. Required.
