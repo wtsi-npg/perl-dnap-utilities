@@ -1,5 +1,6 @@
 Upcoming
 
+Release 0.7.0
 - Add method query_dataset to WTSI::NPG::HTS::PacBio::Sequel::APIClient
 
 Release 0.6.1
