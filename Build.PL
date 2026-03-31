@@ -38,7 +38,7 @@ my $build = WTSI::DNAP::Utilities::Build->new
                           'DateTime'                  => '0',
                           'DateTime::Format::Strptime' => '0',
                           'Encode'                    => '>= 2.42',
-                          'IPC::Run'                  => '20250809.0',
+                          'IPC::Run'                  => '<= 20250809.0',
                           'JSON'                      => '>= 2.61',
                           'List::MoreUtils'           => '0',
                           'Log::Log4perl'             => '>= 1.42',
