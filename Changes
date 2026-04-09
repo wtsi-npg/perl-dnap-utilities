@@ -1,5 +1,7 @@
 Upcoming
 
+- Update matrix of CI perl versions, remove 5.22.4 and add 5.38.2
+
 Release 0.7.4 (2026-02-18)
 - CI updates
 
